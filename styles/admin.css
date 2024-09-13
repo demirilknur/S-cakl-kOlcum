@@ -1,0 +1,179 @@
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-image: url('../image/arayüz1.jpg');
+            background-size: cover;
+            background-position: center;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            z-index: -1;
+        }
+
+        .login-box {
+            background: linear-gradient(145deg, rgba(100, 100, 100, 0.3), rgba(150, 150, 150, 0.3));
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            width: 400px;
+            position: relative;
+            backdrop-filter: blur(10px);
+        }
+
+        .profile-icon {
+            position: absolute;
+            top: -60px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #fff;
+            border-radius: 50%;
+            padding: 10px;
+            border: 5px solid #fff;
+            width: 100px;
+            height: 100px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .profile-icon img {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+        }
+
+        .form-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            margin-top: 80px;
+            padding: 20px 0;
+        }
+
+        .form-container input {
+            padding: 10px;
+            border-radius: 8px;
+            border: none;
+            outline: none;
+            font-size: 16px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: box-shadow 0.3s ease;
+            width: 100%;
+            margin-bottom: 20px;
+        }
+
+        .form-container input.error {
+            border: 2px solid red;
+        }
+
+        .form-container input:focus {
+            box-shadow: 0 4px 12px rgba(255, 255, 255, 0.2);
+        }
+
+        .form-container .button-container {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .form-container button {
+            background-color: #2a2a2a;
+            color: #fff;
+            padding: 14px;
+            border: none;
+            border-radius: 8px;
+            width: 100%;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .form-container button:hover {
+            background-color: #000000;
+            transform: translateY(-3px);
+        }
+
+        .form-switch {
+            margin-top: 10px;
+            color: #040608;
+            cursor: pointer;
+            text-decoration: underline;
+        }
+
+        .forgot-password {
+            margin-top: 20px;
+            font-size: 14px;
+            position: absolute;
+            bottom: 20px;
+            width: 100%;
+            text-align: center;
+        }
+
+        .forgot-password a {
+            color: #ffffff;
+            text-decoration: underline;
+            cursor: pointer;
+        }
+
+        .forgot-password-email {
+            display: none;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .forgot-password-email input {
+            margin-bottom: 0;
+        }
+
+        .forgot-password-email button {
+            width: auto;
+            margin: 10px auto 0;
+        }
+
+        .toggle-password {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+        }
+
+        .user-login-button {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+        }
+
+        .user-login-button button {
+            background-color: #2a2a2a;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .user-login-button button:hover {
+            background-color: #000000;
+        }

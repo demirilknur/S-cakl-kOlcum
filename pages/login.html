@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Giriş Yap / Kayıt Ol</title>
+    <link rel="stylesheet" href="../styles/login.css">
+<body>
+    <div class="admin-button">
+        <button onclick="location.href='admin.html'">Admin Girişi</button>
+    </div>
+    <div class="login-box">
+        <div class="profile-icon">
+            <img src="https://cdn-icons-png.flaticon.com/512/310/310818.png" alt="Kullanıcı Profili">
+        </div>
+
+        <!-- Giriş Yap Formu -->
+        <div class="form-container" id="login-form">
+            <input type="text" id="username" placeholder="Kullanıcı Adı" required>
+            <div style="position: relative;">
+                <input type="password" id="password" placeholder="Şifre" required>
+                <span class="toggle-password" onclick="togglePasswordVisibility('password')">👁️</span>
+            </div>
+            <div class="button-container">
+                <button type="submit" onclick="login()">Giriş Yap</button>
+                <div class="form-switch" onclick="toggleForm()">Kayıt Ol</div>
+            </div>
+            <div class="forgot-password">
+                <a href="#" onclick="showForgotPasswordForm()">Şifremi Unuttum</a>
+            </div>
+        </div>
+
+        <!-- Şifremi Unuttum Formu -->
+        <div class="form-container forgot-password-email" id="forgot-password-form">
+            <input type="email" id="forgot-email" placeholder="E-posta" required>
+            <button type="button" onclick="resetPassword()">Şifreyi Gönder</button>
+            <div class="form-switch" onclick="hideForgotPasswordForm()">Geri Dön</div>
+        </div>
+
+        <!-- Kayıt Ol Formu -->
+        <div class="form-container" id="signup-form" style="display: none;">
+            <input type="text" id="new-username" placeholder="Kullanıcı Adı" required>
+            <input type="email" id="new-email" placeholder="E-posta" required>
+            <div style="position: relative;">
+                <input type="password" id="new-password" placeholder="Şifre" required>
+                <span class="toggle-password" onclick="togglePasswordVisibility('new-password')">👁️</span>
+            </div>
+            <div style="position: relative;">
+                <input type="password" id="confirm-password" placeholder="Şifreyi Onayla" required>
+                <span class="toggle-password" onclick="togglePasswordVisibility('confirm-password')">👁️</span>
+            </div>
+            <div class="button-container">
+                <button type="submit" onclick="signup()">Kayıt Ol</button>
+                <div class="form-switch" onclick="toggleForm()">Giriş Yap</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Şifre görünürlüğü toggle fonksiyonu
+        function togglePasswordVisibility(inputId) {
+            const input = document.getElementById(inputId);
+            const type = input.type === 'password' ? 'text' : 'password';
+            input.type = type;
+        }
+
+        // E-posta doğrulama fonksiyonu
+        function validateEmail(email) {
+            const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return re.test(email);
+        }
+
+        // Şifre doğrulama fonksiyonu
+        function validatePassword(password) {
+            const minLength = 8;
+            const hasUpperCase = /[A-Z]/.test(password);
+            const hasLowerCase = /[a-z]/.test(password);
+
+            return password.length >= minLength && hasUpperCase && hasLowerCase;
+        }
+
+        // Kullanıcı adı doğrulama fonksiyonu
+        function validateUsername(username) {
+            const minLength = 8;
+            const hasUpperCase = /[A-Z]/.test(username);
+            const hasLowerCase = /[a-z]/.test(username);
+
+            return username.length >= minLength && hasUpperCase && hasLowerCase;
+        }
+
+        // Form doğrulama fonksiyonu
+        function validateInput(inputId) {
+            const input = document.getElementById(inputId);
+            if (!input.value.trim()) {
+                input.classList.add('error');
+                return false;
+            }
+            input.classList.remove('error');
+            return true;
+        }
+
+        // Kayıt fonksiyonu
+        function signup() {
+            const usernameValid = validateUsername(document.getElementById('new-username').value);
+            const emailValid = validateEmail(document.getElementById('new-email').value);
+            const passwordValid = validatePassword(document.getElementById('new-password').value);
+            const confirmPasswordValid = validateInput('confirm-password');
+
+            if (!usernameValid) {
+                alert('Kullanıcı adı en az 8 karakter uzunluğunda olmalı ve hem büyük hem de küçük harf içermelidir.');
+                return;
+            }
+
+            if (!emailValid) {
+                alert('Geçerli bir e-posta adresi girin.');
+                return;
+            }
+
+            if (!passwordValid) {
+                alert('Şifre en az 8 karakter uzunluğunda olmalı ve hem büyük hem de küçük harf içermelidir.');
+                return;
+            }
+
+            const username = document.getElementById('new-username').value;
+            const email = document.getElementById('new-email').value;
+            const password = document.getElementById('new-password').value;
+            const confirmPassword = document.getElementById('confirm-password').value;
+
+            if (password !== confirmPassword) {
+                alert('Şifreler eşleşmiyor. Lütfen tekrar deneyin.');
+                return;
+            }
+
+            const user = {
+                username: username,
+                email: email,
+                password: password
+            };
+
+            localStorage.setItem(username, JSON.stringify(user));
+            alert('Kayıt başarılı! Giriş yapabilirsiniz.');
+            toggleForm();  // Kayıt sonrası giriş ekranına dön
+        }
+
+        // Giriş fonksiyonu
+        function login() {
+            const usernameValid = validateInput('username');
+            const passwordValid = validateInput('password');
+
+            if (!usernameValid || !passwordValid) {
+                alert('Lütfen tüm alanları doldurduğunuzdan emin olun.');
+                return;
+            }
+
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            const storedUser = localStorage.getItem(username);
+
+            if (!storedUser) {
+                alert('Kullanıcı bulunamadı. Lütfen kayıt olun.');
+                return;
+            }
+
+            const user = JSON.parse(storedUser);
+
+            if (user.password === password) {
+                alert('Giriş başarılı!');
+                window.location.href = 'home.html';  // Giriş başarılıysa yönlendirme yapılır
+            } else {
+                alert('Şifre yanlış. Lütfen tekrar deneyin.');
+            }
+        }
+
+        // Formlar arasında geçiş yapma fonksiyonu
+        function toggleForm() {
+            const loginForm = document.getElementById('login-form');
+            const signupForm = document.getElementById('signup-form');
+            if (loginForm.style.display === 'none') {
+                loginForm.style.display = 'block';
+                signupForm.style.display = 'none';
+            } else {
+                loginForm.style.display = 'none';
+                signupForm.style.display = 'block';
+            }
+        }
+
+        // Şifremi Unuttum formunu gösterme
+        function showForgotPasswordForm() {
+            const loginForm = document.getElementById('login-form');
+            const forgotPasswordForm = document.getElementById('forgot-password-form');
+            loginForm.style.display = 'none';
+            forgotPasswordForm.style.display = 'flex';
+        }
+
+        // Şifremi Unuttum formunu gizleme
+        function hideForgotPasswordForm() {
+            const loginForm = document.getElementById('login-form');
+            const forgotPasswordForm = document.getElementById('forgot-password-form');
+            loginForm.style.display = 'block';
+            forgotPasswordForm.style.display = 'none';
+        }
+
+        // Şifreyi sıfırlama fonksiyonu
+        function resetPassword() {
+            const email = document.getElementById('forgot-email').value;
+
+            if (!validateEmail(email)) {
+                alert('Geçerli bir e-posta adresi girin.');
+                return;
+            }
+
+            const users = Object.keys(localStorage);
+            const user = users.find(u => {
+                const data = JSON.parse(localStorage.getItem(u));
+                return data.email === email;
+            });
+
+            if (user) {
+                alert('Şifre sıfırlama talimatları e-posta adresinize gönderilmiştir.');
+                hideForgotPasswordForm();
+
+                // Burada e-posta gönderimini gerçekleştirin
+                // Gerçek e-posta gönderimi için sunucu tarafı kodu gereklidir
+                // Aşağıdaki kod sadece bir uyarı simülasyonu sağlar
+                console.log("Şifre sıfırlama talimatları ${email} adresine gönderildi.");
+            } else {
+                alert('E-posta adresi bulunamadı.');
+            }
+        }
+    </script>
+</body>
+</html>

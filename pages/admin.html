@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Girişi</title>
+    <link rel="stylesheet" href="../styles/admin.css">
+    
+    
+</head>
+<body>
+    <div class="user-login-button">
+        <button onclick="location.href='login.html'">Kullanıcı Girişi</button>
+    </div>
+    <div class="login-box">
+        <div class="profile-icon">
+            <img src="https://cdn-icons-png.flaticon.com/512/310/310818.png" alt="Admin Profili">
+        </div>
+        
+        <!-- Admin Giriş Yap Formu -->
+        <div class="form-container" id="admin-login-form">
+            <input type="text" id="admin-username" placeholder="Admin Kullanıcı Adı" required>
+            <div style="position: relative;">
+                <input type="password" id="admin-password" placeholder="Şifre" required>
+                <span class="toggle-password" onclick="togglePasswordVisibility('admin-password')">👁️</span>
+            </div>
+            <div class="button-container">
+                <button type="button" onclick="adminLogin()">Giriş Yap</button>
+                <div class="form-switch" onclick="showAdminForgotPasswordForm()">Şifremi Unuttum</div>
+            </div>
+        </div>
+
+        <!-- Admin Şifremi Unuttum Formu -->
+        <div class="form-container forgot-password-email" id="admin-forgot-password-form" style="display: none;">
+            <input type="email" id="admin-forgot-email" placeholder="E-posta" required>
+            <button type="button" onclick="adminResetPassword()">Şifreyi Gönder</button>
+            <div class="form-switch" onclick="hideAdminForgotPasswordForm()">Geri Dön</div>
+        </div>
+
+        <!-- Admin Şifre Belirleme Formu -->
+        <div class="form-container" id="admin-setup-form" style="display: none;">
+            <input type="text" id="new-admin-username" placeholder="Yeni Kullanıcı Adı" required>
+            <div style="position: relative;">
+                <input type="password" id="new-admin-password" placeholder="Yeni Şifre" required>
+                <span class="toggle-password" onclick="togglePasswordVisibility('new-admin-password')">👁️</span>
+            </div>
+            <input type="email" id="new-admin-email" placeholder="E-posta" required>
+            <button type="button" onclick="setupAdminCredentials()">Kaydet</button>
+        </div>
+    </div>
+
+    <script>
+        // Şifre görünürlüğü toggle fonksiyonu
+        function togglePasswordVisibility(inputId) {
+            const input = document.getElementById(inputId);
+            input.type = (input.type === 'password') ? 'text' : 'password';
+        }
+
+        // Admin Giriş Fonksiyonu
+        function adminLogin() {
+            const username = document.getElementById('admin-username').value;
+            const password = document.getElementById('admin-password').value;
+
+            const savedUsername = localStorage.getItem('admin-username');
+            const savedPassword = localStorage.getItem('admin-password');
+
+            if (username === savedUsername && password === savedPassword) {
+                alert('Admin girişi başarılı!');
+                window.location.href = 'home.html'; // Admin paneline yönlendirme
+            } else {
+                alert('Kullanıcı adı veya şifre yanlış.');
+            }
+        }
+
+        // Admin Şifremi Unuttum Fonksiyonu
+        function showAdminForgotPasswordForm() {
+            document.getElementById('admin-login-form').style.display = 'none';
+            document.getElementById('admin-forgot-password-form').style.display = 'flex';
+        }
+
+        function hideAdminForgotPasswordForm() {
+            document.getElementById('admin-login-form').style.display = 'block';
+            document.getElementById('admin-forgot-password-form').style.display = 'none';
+        }
+
+        function adminResetPassword() {
+            const email = document.getElementById('admin-forgot-email').value;
+            const savedEmail = localStorage.getItem('admin-email');
+
+            if (email === savedEmail) {
+                alert('Şifre sıfırlama talimatları e-posta adresinize gönderilmiştir.');
+                hideAdminForgotPasswordForm();
+                console.log("Şifre sıfırlama talimatları ${email} adresine gönderildi.");
+            } else {
+                alert('E-posta adresi bulunamadı.');
+            }
+        }
+
+        // Admin Şifre Belirleme Fonksiyonu
+        function setupAdminCredentials() {
+            const username = document.getElementById('new-admin-username').value;
+            const password = document.getElementById('new-admin-password').value;
+            const email = document.getElementById('new-admin-email').value;
+
+            if (username && password && email) {
+                localStorage.setItem('admin-username', username);
+                localStorage.setItem('admin-password', password);
+                localStorage.setItem('admin-email', email);
+                alert('Admin bilgileri başarıyla kaydedildi.');
+                document.getElementById('admin-setup-form').style.display = 'none';
+                document.getElementById('admin-login-form').style.display = 'block';
+            } else {
+                alert('Lütfen tüm alanları doldurun.');
+            }
+        }
+
+        // Sayfa yüklendiğinde kontrol yap
+        window.onload = function() {
+            const savedUsername = localStorage.getItem('admin-username');
+
+            if (!savedUsername) {
+                // Admin bilgileri set edilmemiş, şifre belirleme formunu göster
+                document.getElementById('admin-setup-form').style.display = 'flex';
+                document.getElementById('admin-login-form').style.display = 'none';
+            } else {
+                // Admin bilgileri zaten set edilmiş, giriş formunu göster
+                document.getElementById('admin-setup-form').style.display = 'none';
+                document.getElementById('admin-login-form').style.display = 'block';
+            }
+        }
+    </script>
+</body>
+</html>
