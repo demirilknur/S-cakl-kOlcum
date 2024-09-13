@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <link rel="stylesheet" href="../styles/home.css">
+</head>
+<body>
+    <div class="background-blur" id="background-blur"></div>
+    <div class="menu-container">
+        <button class="menu-button" onclick="toggleMenu()">
+            <span class="bar bar1"></span>
+            <span class="bar bar2"></span>
+            <span class="bar bar3"></span>
+        </button>
+        <div class="menu" id="menu">
+            <div class="menu-label">Menü</div>
+            <button onclick="window.location.href='phoneNumber.html'">Kayıtlı Olan Telefonlar</button>
+            <button onclick="window.location.href='term.html'">Oda Sıcaklıklarını Düzenle</button>
+            <button onclick="window.location.href='rapor.html'">Raporlar</button>
+            <div class="exit-btn-container">
+                <button onclick="window.location.href='login.html'">Çıkış</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleMenu() {
+            const menuButton = document.querySelector('.menu-button');
+            const menu = document.getElementById('menu');
+            const blur = document.getElementById('background-blur');
+            
+            menuButton.classList.toggle('open');
+            menu.classList.toggle('show');
+            blur.style.display = blur.style.display === 'block' ? 'none' : 'block';
+        }
+    </script>
+</body>
+</html>
